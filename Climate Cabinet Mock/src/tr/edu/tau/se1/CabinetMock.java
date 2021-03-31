@@ -19,7 +19,7 @@ public class CabinetMock extends Thread {
 	public CabinetMock(int port) {
 		this.port = port;
 	}
-
+      
 	public void startServer() {
 		try {
 			serverSocket = new ServerSocket(port);
