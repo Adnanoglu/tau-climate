@@ -98,7 +98,7 @@ class RequestHandler extends Thread {
 	private float targetTemp;
 	private int targetTime;
 	private float toleranceRate;
-	private float tempFailureRate;
+//	private float tempFailureRate;
 	private boolean targetTempSet;
 	private boolean targetTempReached;
 	private long tempSetTime;
@@ -379,7 +379,7 @@ class RequestHandler extends Thread {
 		this.targetTemp = Float.parseFloat(targetTemp);
 		this.targetTime = Integer.parseInt(targetTime);
 		this.toleranceRate = Float.parseFloat(tolerance)/100;
-		this.tempFailureRate = Float.parseFloat(tempFailureRate);
+//		this.tempFailureRate = Float.parseFloat(tempFailureRate);
 	}
 
 	private String processEndInitMessage() {
