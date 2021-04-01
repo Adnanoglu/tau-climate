@@ -58,10 +58,10 @@ public class CabinetMock extends Thread {
 		System.out.println(CabinetMock.logCounter + "\t" + entry + "\t[Size of Message: " + entry.length() + "]");
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		if (args.length == 0) {
 			CabinetMock.log("Usage: CabinetMock <port>");
-			System.exit(0);
+			throw new Exception("Usage: CabinetMock <port>");
 		}
 		int port = Integer.parseInt(args[0]);
 		CabinetMock.log("Start server on port: " + port);
@@ -69,7 +69,6 @@ public class CabinetMock extends Thread {
 		CabinetMock server = new CabinetMock(port);
 		server.startServer();
 
-		// Automatically shutdown in 1 minute
 		try {
 			Thread.sleep(60000);
 		} catch (Exception e) {
@@ -77,6 +76,8 @@ public class CabinetMock extends Thread {
 		}
 
 		server.stopServer();
+		CabinetMock.log("Server stopped");
+		System.exit(0);
 	}
 }
 
@@ -98,7 +99,6 @@ class RequestHandler extends Thread {
 	private float targetTemp;
 	private int targetTime;
 	private float toleranceRate;
-//	private float tempFailureRate;
 	private boolean targetTempSet;
 	private boolean targetTempReached;
 	private long tempSetTime;
@@ -291,7 +291,7 @@ class RequestHandler extends Thread {
 			break;
 		}
 		case SETTARGET: {
-//			messages.add("SETTARGET|70.5|180|3|5"); //Target Temperature | TimeFrame[secs] | ToleranceRate[%] | Failurerate[%]
+//			messages.add("SETTARGET|70.5|180|3|5"); //Target Temperature | TimeFrame[secs] | ToleranceRate[%]
 
 			this.setTargetTemp((String)tokenizer.nextElement(), (String)tokenizer.nextElement(), (String)tokenizer.nextElement(), (String)tokenizer.nextElement());
 			CabinetMock.log("SENDING - SETTARGET-RESP:"+this.actTemp);
@@ -308,9 +308,8 @@ class RequestHandler extends Thread {
 				toClient.println("Wrong ordered message arrived. Ignoring and waiting for the next one...");
 				break;
 			}
-			CabinetMock.log("Starting STRTPING");
+			CabinetMock.log("SENDING - Starting STRTPING");
 			toClient.println("Starting STRTPING");
-			//TODO change these variables
 			this.failureRatePreTest = Integer.parseInt(tokenizer.nextToken());
 			this.preTestCnt = 0;
 			this.random = new Random();
